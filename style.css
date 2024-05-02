@@ -1,0 +1,396 @@
+:root {
+    --button-color: #f8f8f8;
+    --dropdown-hover: #ffe;
+    --main-bg: #f0f0f0;
+    --main-fg: #111;
+    --main-grey: #797979;
+    --row-hover: #ffdd0044;
+    --shadow: #79797933;
+    --suffix-box-bg-color: #e0e0e0;
+    --suffix-box-border-color: #ccc;
+    --table-hover: #ffdd00;
+    --word-bg: #fefefe;
+    --word-type-color: #111;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    padding: 20px;
+    background-color: var(--main-bg);
+    color: var(--main-fg)
+}
+
+#sentence {
+    padding: 1em 0;
+    font-size: 3rem;
+    list-style-type: none;
+}
+
+#sentence li {
+    position: relative;
+    display: inline-block;
+    padding: 0.5em;
+    margin-right: 0.5em;
+    border-radius: 50px;
+    text-align: center;
+    background: var(--word-bg);
+}
+
+.word-text::after {
+    content: '';
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    bottom: 20px; /* Position at the bottom of the <p> element */
+    height: 5px; /* Thickness of the underline */
+    border-radius: 2px; /* Optional: rounded corners */
+}
+
+.word-text.solar::after {
+    background-color: #bf9000; /* Gold color for solar */
+}
+
+.word-text.lunar::after {
+    background-color: #1155cc; /* Blue color for lunar */
+}
+
+#sentence li:hover {
+    box-shadow: 10px 10px 10px var(--shadow);
+    cursor: grab;
+}
+
+#sentence li:active {
+    cursor: grabbing;
+}
+
+.dropdown-word {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.dropdown-more {
+    padding: 5px;
+}
+
+.dropdown-word:hover {
+    background: var(--dropdown-hover);
+    font-weight: 700;
+}
+
+.dropdown-word-text {
+    font-weight: 700;
+}
+
+.dropdown-word-type {
+    font-style: italic;
+    color: var(--main-grey);
+}
+
+.dropdown-word-definition {
+    color: var(--main-grey);
+}
+
+/* Styles for types of words */
+.word-n {
+    border: 3px solid var(--color-n);
+}
+
+.word-v {
+    border: 3px solid var(--color-v);
+}
+
+.word-adj {
+    border: 3px solid var(--color-adj);
+}
+
+.word-pron {
+    border: 3px solid var(--color-pron);
+}
+
+.word-conj {
+    border: 3px solid var(--color-conj);
+}
+
+.word-adv {
+    border: 3px solid var(--color-adv);
+}
+
+.suffix-selection {
+    /* display: none; */
+    position: relative;
+    top: 20px;
+    width: 100%;
+    background: var(--suffix-box-bg-color);
+    border: 1px solid var(--suffix-box-border-color);
+    padding: 10px;
+    overflow: scroll;
+}
+
+.basic-noun-row {
+    font-style: italic;
+}
+
+.inflection-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: var(--word-type-color) solid 2px;
+    margin: 10px 0 0 0;
+}
+
+.inflection-table th {
+    padding: 5px;
+    background-color: var(--word-type-color);
+    color: var(--main-bg);
+    text-align: center;
+}
+
+.inflection-table td {
+    padding: 5px;
+    border: var(--word-type-color) solid 1px;
+    text-align: center;
+}
+
+.inflection-table tr.first-row {
+    border-top: var(--word-type-color) solid 5px;
+}
+
+.inflection-table tr:hover {
+    background: var(--row-hover);
+}
+
+.inflection-table td:hover {
+    background: var(--table-hover);
+}
+
+.hidden {
+    display: none;
+}
+
+#closeButton {
+    background-color: transparent;
+    border: none;
+    font-size: 3em;
+    padding: 10px;
+    line-height: 20px;
+    color: var(--main-grey);
+}
+
+.inflection-table input[type="checkbox"] {
+    margin: auto;
+    display: block;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    background-color: var(--main-bg);
+    margin: 4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="checkbox"].noun-column-ergative {
+    border: 2px solid var(--color-ergative);
+}
+
+input[type="checkbox"].noun-column-accusitive {
+    border: 2px solid var(--color-accusitive);
+}
+
+input[type="checkbox"].noun-column-dative {
+    border: 2px solid var(--color-dative);
+}
+
+input[type="checkbox"].noun-column-absolutive {
+    border: 2px solid var(--color-absolutive);
+}
+
+input[type="checkbox"].noun-column-ergative:checked {
+    background: var(--color-ergative);
+}
+
+input[type="checkbox"].noun-column-accusitive:checked {
+    background: var(--color-accusitive);
+}
+
+input[type="checkbox"].noun-column-dative:checked {
+    background: var(--color-dative);
+}
+
+input[type="checkbox"].noun-column-absolutive:checked {
+    background: var(--color-absolutive);
+}
+
+input[type="checkbox"].verb-checkbox, input[type="checkbox"].adj-checkbox {
+    border: 2px solid var(--word-type-color);
+}
+
+input[type="checkbox"].verb-checkbox:checked, input[type="checkbox"].adj-checkbox:checked {
+    background: var(--word-type-color);
+}
+
+input[type="checkbox"]:disabled {
+    border-color: #ccc;
+    background-color: #f3f3f3;
+    cursor: not-allowed;
+}
+
+input[type="checkbox"]:not(:disabled):hover {
+    border-color: #888;
+}
+
+/* Container styling */
+#input-container {
+    display: flex; /* Enables flexbox layout */
+    align-items: left; /* Centers the items vertically */
+    gap: 10px; /* Adds space between the input and button */
+    margin-bottom: 10px;
+}
+
+/* Base styling for both the input and the button */
+#autocompleteInput, button {
+    padding: 8px 12px; /* Padding for better spacing */
+    border: 2px solid #ccc; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    outline: none; /* Removes the default focus highlight */
+}
+
+/* Additional styling for the input */
+#autocompleteInput {
+    width: 300px; /* Sets the width of the input field */
+}
+
+/* Hover effects */
+#autocompleteInput:hover, button:hover {
+    border-color: var(--main-grey); /* Darker border on hover */
+}
+
+/* Focus effect for input field */
+#autocompleteInput:focus {
+    border-color: #0056b3; /* Blue border when focused */
+    box-shadow: 0 0 8px rgba(0, 86, 179, 0.2); /* Soft glow effect */
+}
+
+button {
+    background-color: var(--button-color); /* Light grey background */
+    cursor: pointer; /* Cursor indicates clickable item */
+}
+
+button:active {
+    background-color: #e0e0e0; /* Darker background when pressed */
+}
+
+#outputSentence {
+    display: block;
+    margin-top: 10px;
+    font-weight: 700;;
+}
+
+.outputGloss {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin-top: 10px;
+}
+
+#outputIpa {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+#gloss-sentence-container {
+    margin-top: 20px;
+}
+
+#result-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: var(--suffix-box-bg-color);
+    border: 3px solid var(--suffix-box-border-color);
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;  /* Adjusted to better center the button */
+    right: 5px; /* Adjusted to provide padding from the edges */
+    width: 20px; /* Width of the close button */
+    height: 20px; /* Height of the close button */
+    background-color: var(--button-color); /* White background for the button */
+    border-radius: 50%; /* Makes the background circular */
+    cursor: pointer;
+    border: none;
+    outline: none;
+    padding: 0;
+    display: flex; /* Aligns the pseudo-elements nicely in the center */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds shadow for better visibility */
+}
+
+.close-btn::before,
+.close-btn::after {
+    content: '';
+    position: absolute;
+    width: 10px; /* Length of the "x" lines */
+    height: 2px; /* Thickness of the "x" lines */
+    background-color: red; /* Color of the "x" */
+}
+
+.close-btn::before {
+    transform: rotate(45deg); /* First line of the "x" */
+}
+
+.close-btn::after {
+    transform: rotate(-45deg); /* Second line of the "x" */
+}
+
+.close-btn:hover {
+    border: var(--main-grey) 2px solid; /* Slightly darker background on hover for feedback */
+}
+
+.close-btn:hover::before,
+.close-btn:hover::after {
+    background-color: darkred; /* Color change on hover for feedback */
+}
+
+#sentence li.highlighted {
+    box-shadow: 0 0 0 3px var(--table-hover);
+    animation: flashBorder 1s linear infinite;
+}
+
+@keyframes flashBorder {
+    0%, 100% {
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    }
+    50% {
+        box-shadow: 0 0 0 10px var(--table-hover);
+    }
+}
+
+.input-highlight {
+    text-decoration: underline;
+    color: red;
+}
+
+.mood-selector {
+    width: 100%;
+    padding: 5px;
+    border: 2px solid var(--color-v);
+    border-radius: 3px;
+    background-color: var(--main-bg);
+    color: var(--main-fg);
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.mood-selector:hover, .mood-selector:focus {
+    border-color: var(--table-hover);
+    outline: none;
+}

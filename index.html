@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create a Sentence with Autocomplete</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+</head>
+
+<body>
+    <div id="input-container">
+        <input type="text" id="autocompleteInput" placeholder="Start typing...">
+        <button id="undoButton">Remove last word</button>
+    </div>
+
+    <ul id="sentence"></ul>
+
+    <div id="suffixSelection" class="suffix-selection hidden">
+        <button id="closeButton" style="position: absolute; top: 0; right: 0; cursor: pointer;" title="close">×</button>
+        <h3></h3>
+        <table class="inflection-table noun-inflection-table hidden">
+            <thead>
+                <tr>
+                    <th colspan='3'>role</th>
+                    <th>ergative</th>
+                    <th>accusitive</th>
+                    <th>dative</th>
+                    <th>absolutive</th>
+                </tr>
+                <tr class="basic-noun-row">
+                    <td colspan='3'>(unmodified)</td>
+                    <td><input type="checkbox" box-id="bas-erg" data-group="noun-basic" class="noun-checkbox noun-column-ergative" />
+                    </td>
+                    <td><input type="checkbox" box-id="bas-acc" data-group="noun-basic"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="bas-dat" data-group="noun-basic" class="noun-checkbox noun-column-dative" />
+                    </td>
+                    <td><input type="checkbox" box-id="bas-abs" data-group="noun-basic"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="first-row">
+                    <th rowspan='6'>2</th>
+                    <td rowspan='6'>possessive</td>
+                    <td><span title="1st person singular (my)">1S</span></td>
+                    <td><input type="checkbox" box-id="1sg-erg" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="1sg-acc" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="1sg-dat" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-dative" /></td>
+                    <td><input type="checkbox" box-id="1sg-abs" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr>
+                    <td><span title="your">2S</span></td>
+                    <td><input type="checkbox" box-id="2sg-erg" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="2sg-acc" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="2sg-dat" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-dative" /></td>
+                    <td><input type="checkbox" box-id="2sg-abs" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr>
+                    <td><span title="his/her/their/its">3S</span></td>
+                    <td><input type="checkbox" box-id="3sg-erg" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="3sg-acc" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="3sg-dat" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-dative" /></td>
+                    <td><input type="checkbox" box-id="3sg-abs" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr>
+                    <td><span title="our">1P</span></td>
+                    <td><input type="checkbox" box-id="1pl-erg" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="1pl-acc" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="1pl-dat" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-dative" /></td>
+                    <td><input type="checkbox" box-id="1pl-abs" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr>
+                    <td><span title="your">2P</span></td>
+                    <td><input type="checkbox" box-id="2pl-erg" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="2pl-acc" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="2pl-dat" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-dative" /></td>
+                    <td><input type="checkbox" box-id="2pl-abs" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr style="border-bottom: 2px solid inherit" ;>
+                    <td><span title="their">3P</span></td>
+                    <td><input type="checkbox" box-id="3pl-erg" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="3pl-acc" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="3pl-dat" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-dative" /></td>
+                    <td><input type="checkbox" box-id="3pl-abs" data-group="noun-possessive"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr class="first-row">
+                    <th>3</th>
+                    <td colspan='2'>genitive</td>
+                    <td><input type="checkbox" box-id="gen-erg" data-group="noun-genitive"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="gen-acc" data-group="noun-genitive"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="gen-dat" data-group="noun-genitive" class="noun-checkbox noun-column-dative" />
+                    </td>
+                    <td><input type="checkbox" box-id="gen-abs" data-group="noun-genitive"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr class="first-row">
+                    <th rowspan='5'>4</th>
+                    <td colspan='2'>inessive</td>
+                    <td><input type="checkbox" box-id="ine-erg" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="ine-acc" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="ine-dat" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-dative" /></td>
+                    <td><input type="checkbox" box-id="ine-abs" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr>
+                    <td colspan='2'>adessive</td>
+                    <td><input type="checkbox" box-id="ade-erg" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="ade-acc" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="ade-dat" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-dative" /></td>
+                    <td><input type="checkbox" box-id="ade-abs" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr>
+                    <td colspan='2'>ablative</td>
+                    <td><input type="checkbox" box-id="abl-erg" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="abl-acc" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="abl-dat" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-dative" /></td>
+                    <td><input type="checkbox" box-id="abl-abs" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr>
+                    <td colspan='2'>allative</td>
+                    <td><input type="checkbox" box-id="all-erg" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="all-acc" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="all-dat" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-dative" /></td>
+                    <td><input type="checkbox" box-id="all-abs" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr>
+                    <td colspan='2'>instrumental</td>
+                    <td><input type="checkbox" box-id="instr-erg" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="instr-acc" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="instr-dat" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-dative" /></td>
+                    <td><input type="checkbox" box-id="instr-abs" data-group="noun-syntactical"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr class="first-row">
+                    <th rowspan='6'>5</th>
+                    <td rowspan='6'>number</td>
+                    <td>none</td>
+                    <td><input type="checkbox" box-id="abe-erg" data-group="noun-number" class="noun-checkbox noun-column-ergative" />
+                    </td>
+                    <td><input type="checkbox" box-id="abe-acc" data-group="noun-number"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="abe-dat" data-group="noun-number" class="noun-checkbox noun-column-dative" />
+                    </td>
+                    <td><input type="checkbox" box-id="abe-abs" data-group="noun-number"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr>
+                    <td>dual</td>
+                    <td><input type="checkbox" box-id="dual-erg" data-group="noun-number"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="dual-acc" data-group="noun-number"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="dual-dat" data-group="noun-number" class="noun-checkbox noun-column-dative" />
+                    </td>
+                    <td><input type="checkbox" box-id="dual-abs" data-group="noun-number"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr>
+                    <td>plural</td>
+                    <td><input type="checkbox" box-id="plu-erg" data-group="noun-number" class="noun-checkbox noun-column-ergative" />
+                    </td>
+                    <td><input type="checkbox" box-id="plu-acc" data-group="noun-number"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="plu-dat" data-group="noun-number" class="noun-checkbox noun-column-dative" />
+                    </td>
+                    <td><input type="checkbox" box-id="plu-abs" data-group="noun-number"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr>
+                    <td>paucal</td>
+                    <td><input type="checkbox" box-id="pau-erg" data-group="noun-number" class="noun-checkbox noun-column-ergative" />
+                    </td>
+                    <td><input type="checkbox" box-id="pau-acc" data-group="noun-number"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="pau-dat" data-group="noun-number" class="noun-checkbox noun-column-dative" />
+                    </td>
+                    <td><input type="checkbox" box-id="pau-abs" data-group="noun-number"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+                <tr>
+                    <td>collective</td>
+                    <td><input type="checkbox" box-id="coll-erg" data-group="noun-number"
+                            class="noun-checkbox noun-column-ergative" /></td>
+                    <td><input type="checkbox" box-id="coll-acc" data-group="noun-number"
+                            class="noun-checkbox noun-column-accusitive" /></td>
+                    <td><input type="checkbox" box-id="coll-dat" data-group="noun-number" class="noun-checkbox noun-column-dative" />
+                    </td>
+                    <td><input type="checkbox" box-id="coll-abs" data-group="noun-number"
+                            class="noun-checkbox noun-column-absolutive" /></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="inflection-table verb-inflection-table hidden">
+            <thead>
+                <tr>
+                    <th>tense</th>
+                    <th title="1st-person singular">1S</th>
+                    <th title="1st-person plural">1P</th>
+                    <th title="2nd-person singular/plural">2</th>
+                    <th title="3rd-person singular">3S</th>
+                    <th title="3rd-person plural">3P</th>
+                    <th title="formal">FORM</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>present</th>
+                    <td><input type="checkbox" data-group="verb" box-id="pres-1s" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="pres-1p" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="pres-2" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="pres-3s" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="pres-3p" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="pres-form" class="verb-checkbox" /></td>
+                </tr>
+                <tr>
+                    <th>habitual</th>
+                    <td><input type="checkbox" data-group="verb" box-id="hab-1s" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="hab-1p" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="hab-2" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="hab-3s" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="hab-3p" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="hab-form" class="verb-checkbox" /></td>
+                </tr>
+                <tr>
+                    <th>past</th>
+                    <td><input type="checkbox" data-group="verb" box-id="past-1s" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="past-1p" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="past-2" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="past-3s" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="past-3p" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="past-form" class="verb-checkbox" /></td>
+                </tr>
+                <tr>
+                    <th>future</th>
+                    <td><input type="checkbox" data-group="verb" box-id="fut-1s" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="fut-1p" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="fut-2" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="fut-3s" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="fut-3p" class="verb-checkbox" /></td>
+                    <td><input type="checkbox" data-group="verb" box-id="fut-form" class="verb-checkbox" /></td>
+                </tr>
+                <tr class="first-row">
+                    <th>gerund</th>
+                    <td colspan="7"><input type="checkbox" data-group="verb" box-id="gerund" class="verb-checkbox" /></td>
+                </tr>
+                <tr class="first-row">
+                    <th>mood</th>
+                    <td colspan="6">
+                        <select class="mood-selector" id="mood-selector">
+                            <option value="none">(unmodified)</option>
+                            <option value="abilitive">abilitive (able to)</option>
+                            <option value="conditional">conditional (would)</option>
+                            <option value="deonotic">deonotic (should)</option>
+                            <option value="dubitative">dubitative (might)</option>
+                            <option value="negative">negative</option>
+                            <option value="optative">optative (want to)</option>
+                            <option value="questioning">questioning</option>                            
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="inflection-table adj-inflection-table hidden">
+            <tbody>
+                <tr>
+                    <th>
+                        <span
+                            style="font-size: 80%; color: #bf9000; background: #fff2cc; padding: 0.1em 0.5em; border-radius: 100px;">☉&nbsp;<b>Solar</b></span>
+                    </th>
+                    <th>
+                        <span
+                            style="font-size: 80%; color: #c9daf8; background: #1155cc; padding: 0.1em 0.5em; border-radius: 100px;">●&nbsp;<b>Lunar</b></span>
+                    </th>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" data-group="adj" class="adj-checkbox" box-id="solar" gender="solar" /></td>
+                    <td><input type="checkbox" data-group="adj" class="adj-checkbox" box-id="lunar" gender="lunar" /></td>
+                </tr>
+            </tbody>
+        </table>
+        <button id="resetButton">Reset word</button>
+    </div>
+
+    <div id="result-container">
+        <button id="generateButton">Generate Sentence</button>
+        <div id="gloss-sentence-container">
+            <span id="outputSentence">foobar.</span>
+            <span id="outputIpa">[foobar]</span>
+            <span id="outputGloss1" class="outputGloss">foobar</span>
+            <span id="outputGloss2" class="outputGloss">foobar-BAR-FOO</span>
+        </div>
+    </div>
+
+    <script src="script.js" type="module"></script>
+</body>
+
+</html>
