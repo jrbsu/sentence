@@ -189,13 +189,13 @@ $(document).ready(function () {
     function populateWordID(word) {
         let allIDs = [];
         $('input[type="checkbox"]').each(function() {
-            console.log($(this).attr('box-id') + ' is checked: ' + $(this).is(':checked'));
+            // console.log($(this).attr('box-id') + ' is checked: ' + $(this).is(':checked'));
             if ($(this).is(':checked')) {
                 let boxID = $(this).attr('box-id');
                 allIDs.push(boxID);
             }
         });
-        console.log('Collected IDs: ', allIDs);
+        // console.log('Collected IDs: ', allIDs);
         word.attr('config', allIDs.join(','));
     }
 
@@ -219,7 +219,7 @@ $(document).ready(function () {
             let caseType = selection[1]; // This is 'erg', 'acc', etc.
 
             selectionsObj.basic = caseType;
-            console.log({ selection, nounCase, caseType });
+            // console.log({ selection, nounCase, caseType });
 
             // Determine the group based on the nounCase
             switch (nounCase) {
@@ -269,7 +269,7 @@ $(document).ready(function () {
                 wordType = item.replace(regex, '');
             }
         });
-        console.log(wordType);
+        // console.log(wordType);
         return wordType;
     }
 
@@ -293,12 +293,12 @@ $(document).ready(function () {
         verbMood = $(this).val();
         const verbs = generateVerbs(verbMood, wordOriginal);
         verbTypesObj = verbs;
-        console.log(verbTypesObj);
+        // console.log(verbTypesObj);
         handleVerb(checkedCheckbox, true);
     });
 
     function handleVerb(e, moodChange) {
-        console.log(verbMood, verbTypesObj);
+        // console.log(verbMood, verbTypesObj);
         let target = moodChange ? e : e.target;
         updateCheckboxStates(target);
         let boxID = $(target).attr('box-id');
@@ -445,7 +445,7 @@ $(document).ready(function () {
 
     // Function to handle updating checkbox states
     function updateCheckboxStates(targetCheckbox) {
-        console.log(targetCheckbox.dataset, targetCheckbox);
+        // console.log(targetCheckbox.dataset, targetCheckbox);
         const isChecked = targetCheckbox.checked;
         const currentGroup = targetCheckbox.dataset.group;
         const currentColumn = targetCheckbox.className.replace('noun-checkbox ', '');
@@ -492,7 +492,7 @@ $(document).ready(function () {
                 let hasBasicType = false;
                 config.split(',').forEach(function (configItem) {
                     const [caseType, typeDetail] = configItem.split('-');
-                    console.log({ caseType, typeDetail, wordType });
+                    // console.log({ caseType, typeDetail, wordType });
                     let toPush = `${typeDetail ? typeDetail.toUpperCase() : ''}${caseType ? '-' + caseType.toUpperCase() : ''}`;
                     if (wordType == "n") {
                         if (caseType == "bas") {

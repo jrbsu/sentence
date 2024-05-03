@@ -61,8 +61,9 @@ export const verb_begins_vowel = {
 
 export function checkGajra(verb) {
     const newVerb = verb.replace(/[iëe]$/, "");
-    const regex = /[aeëio](c|t|k|l|n|r|s|x|z|(aj|ij|oj))$/;
+    const regex = /[aeëio](n|d|g|t|k|s|z|c|x|l|r|n|d|g|t|k|s|z|c|x|l|r|(aj|ij|oj))$/;
     const isGajra = regex.test(newVerb) && newVerb.length > 1;
+    console.log(isGajra);
     return isGajra;
 }
 
@@ -125,20 +126,11 @@ export function generateVerbs(verbType, verb) {
     let isGajra = checkGajra(verb); // Check if the current word requires Gajra mutation
     let verbEndings = isGajra ? gajraEnds : nonGajraEnds;
     const suffixNeeded = moodDict[verbType][2]; // Whether the verb type requires a suffix
-    let base = verb.replace(/(v|s|z|c|x|w|l|j|r|ž)e/g, '$1ë'); // Handle specific character mutations
     let suffix = moodDict[verbType][0]; // Suffix from the mood dictionary
+    console.log(suffix);
 
-    if (!suffixNeeded) {
-        base = base.replace(/ë$/, 'e'); // Replace 'ë' with 'e' at the end of the word if no suffix needed
-    }
-
-    // Initially prepare the base form of the verb without mood suffix
-    let newVerb = base; 
-
-    // Append the mood suffix if required, ensuring it's not considered part of the base for certain mutations
-    if (suffixNeeded) {
-        newVerb += suffix; 
-    }
+    let newVerb = suffixNeeded ? verb + suffix : verb;
+    newVerb = newVerb.replace(/[ëei]$/, '');
 
     const verbs = {};
     tenses.forEach(tense => {
@@ -148,6 +140,7 @@ export function generateVerbs(verbType, verb) {
             let verbForm = newVerb;
             
             // Append the correct ending based on tense and person
+            console.log({verbForm, verbEndings});
             verbForm += verbEndings[tense][person];
 
             // Additional logic specific to the 'fut' tense
@@ -164,9 +157,10 @@ export function generateVerbs(verbType, verb) {
             // Store the fully formed verb
             verbs[tense][person] = verbForm;
             let a = verbEndings[tense][person]
-            console.log({tense, person, base, newVerb, verbForm, a, suffixNeeded});
+            console.log({tense, person, newVerb, verbForm, a, suffixNeeded, isGajra});
         });
     });
+    console.log({verbEndings, verbs});
 
     return verbs;
 }
