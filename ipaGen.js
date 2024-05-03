@@ -42,6 +42,7 @@ export function dedupe(word) {
 }
 
 export function stress(word, listNeeded = false) {
+    word = dedupe(word);
     let syllableList = [];
     let holding = multipleReplace(diphthongDictInv, word);
     holding = holding.replace(/(f|v|s|z|c|x|l|j|r|ž)e/g, '$1ë');
@@ -70,15 +71,13 @@ export function stress(word, listNeeded = false) {
     }
     syllableList.push(currentString);
     let stressedSyllable = stressFinder(syllableList);
-    let j = syllableList[stressedSyllable];
-    console.log({syllableList, stressedSyllable, j});
     syllableList[stressedSyllable] = syllableList[stressedSyllable].replace(/(v|s|z|c|x|f|l|j|r|ž)ë/g, '$1e');
     syllableList = syllableList.map(a => multipleReplace(diphthongDict, a));
     return listNeeded ? syllableList : syllableList.join('');
 }
 
 export function stressFinder(syllables) {
-    const index = syllables.findIndex(x => /(tt|kk)/.test(x));
+    const index = syllables.findIndex(x => /(4|5|tt|kk)/.test(x));
     return index === -1 ? 0 : index;
 }
 
